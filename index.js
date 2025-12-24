@@ -1,5 +1,6 @@
 import express from 'express';
-import bodyParser from 'body-parser'
+import bodyParser from 'body-parser';
+import basicAuth from 'express-basic-auth';
 import userRoutes from './routes/users.js';
 import projectCodesRoutes from './routes/projectCodes.js'
 import userGroups from './routes/userGroups.js'
@@ -9,7 +10,16 @@ import tasks from './routes/tasks.js'
 import stayAwake from './routes/keepAwake.js'
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
+
+app.use(basicAuth({
+    users: { [process.env.API_USER]: process.env.API_PASS }, // change to your username/password
+    challenge: true                     // shows login popup in browser
+}));
+
+if (!process.env.API_USER || !process.env.API_PASS) {
+  console.warn('⚠️ API_USER or API_PASS is not set');
+}
 
 app.use(bodyParser.json());
 
@@ -23,4 +33,4 @@ app.use('/', stayAwake);
 
 app.get('/', (req, res) => res.send('HELLO FROM HOMEPAGE'));
 
-app.listen(PORT, () => console.log(`Server running on port: http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
