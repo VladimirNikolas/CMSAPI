@@ -6,6 +6,7 @@ import userGroups from './routes/userGroups.js'
 import wbsCodes from './routes/wbsCodes.js'
 import stream from './routes/stream.js'
 import tasks from './routes/tasks.js'
+import stayAwake from './routes/keepAwake.js'
 
 const app = express();
 const PORT = 5000;
@@ -18,6 +19,7 @@ app.use('/usergroups', userGroups);
 app.use('/wbsCodes', wbsCodes);
 app.use('/stream', stream);
 app.use('/tasks', tasks);
+app.use('/', stayAwake);
 
 app.get('/', (req, res) => res.send('HELLO FROM HOMEPAGE'));
 
